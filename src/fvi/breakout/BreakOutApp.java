@@ -38,18 +38,24 @@ public class BreakOutApp extends GameApplication{
 
     @Override
     protected void initGame() {
+        physicsManager.setGravity(0,0);
         initBat();
-        //initBall();
+        initBall();
         //initBrick();
     }
     private void initBat(){
-        bat=new PhysicsEntity (Type.BALL);
+        bat=new PhysicsEntity (Type.BAT);
         bat.setPosition(getWidth()/2-128/2,getHeight()-25);
         bat.setGraphics(assets.getTexture("bat.png"));
         bat.setBodyType(BodyType.KINEMATIC);
         addEntities(bat);
-
-
+    }
+    private void initBall(){
+        ball=new PhysicsEntity (Type.BALL);
+        ball.setPosition(getWidth()/2-30/2,getHeight()/2-30/2);
+        ball.setGraphics(assets.getTexture("ball.png"));
+        ball.setBodyType(BodyType.DYNAMIC);
+        addEntities(ball);
     }
 
     @Override
