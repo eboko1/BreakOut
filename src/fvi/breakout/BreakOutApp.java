@@ -135,10 +135,10 @@ public class BreakOutApp extends GameApplication{
         ball.setLinearVelocity(5,-5);
     }
     private void initBrick(){
-        for(int i =0;i<48;i++){
+        for(int i =0;i<64;i++){
             PhysicsEntity brick = new PhysicsEntity(Type.BRICK);
             brick.setPosition((i%16)*40,60+(i/16)*40);
-            brick.setGraphics(assets.getTexture("brick.png"));
+            brick.setGraphics(assets.getTexture("brick1.png"));
 
             brick.setCollidable(true);
             addEntities(brick);
