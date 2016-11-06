@@ -3,9 +3,13 @@ package fvi.breakout;
 import com.almasb.fxgl.GameApplication;
 import com.almasb.fxgl.GameSettings;
 import com.almasb.fxgl.asset.Assets;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityType;
+import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsEntity;
 import com.almasb.fxgl.physics.PhysicsManager;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Light;
 import javafx.scene.input.KeyCode;
@@ -26,6 +30,8 @@ public class BreakOutApp extends GameApplication{
     }
     private Assets assets;
     private PhysicsEntity bat,ball;
+
+    private IntegerProperty  score = new SimpleIntegerProperty();
 
 
     @Override
@@ -52,6 +58,37 @@ public class BreakOutApp extends GameApplication{
         initBat();
         initBall();
         initBrick();
+
+        physicsManager.addCollisionHandler(new CollisionHandler(Type.BALL, Type.BRICK) {
+            @Override
+            public void onCollisionBegin(Entity a, Entity b) {
+                removeEntity(b);
+                score.set(score.get()+100);
+            }
+            @Override
+            public void onCollision(Entity a, Entity b) {
+
+            }
+            @Override
+            public void onCollisionEnd(Entity a, Entity b) {
+
+            }
+        });
+        physicsManager.addCollisionHandler(new CollisionHandler(Type.BALL, Type.SCREEN) {
+            @Override
+            public void onCollisionBegin(Entity a, Entity b) {
+
+                score.set(score.get()-500);
+            }
+            @Override
+            public void onCollision(Entity a, Entity b) {
+
+            }
+            @Override
+            public void onCollisionEnd(Entity a, Entity b) {
+
+            }
+        });
     }
     private void initScreenBounds(){
         PhysicsEntity top= new PhysicsEntity(Type.SCREEN);
@@ -61,6 +98,7 @@ public class BreakOutApp extends GameApplication{
         PhysicsEntity bot= new PhysicsEntity(Type.SCREEN);
         bot.setPosition(0,getHeight());
         bot.setGraphics(new Rectangle(getWidth(),10));
+        bot.setCollidable(true);
 
         PhysicsEntity left= new PhysicsEntity(Type.SCREEN);
         left.setPosition(-10,0);
@@ -86,6 +124,8 @@ public class BreakOutApp extends GameApplication{
         ball.setGraphics(assets.getTexture("ball.png"));
         ball.setBodyType(BodyType.DYNAMIC);
 
+        ball.setCollidable(true);
+
         FixtureDef fd= new FixtureDef();
         fd.restitution=0.8f;
         fd.shape= new CircleShape();
@@ -100,6 +140,8 @@ public class BreakOutApp extends GameApplication{
             PhysicsEntity brick = new PhysicsEntity(Type.BRICK);
             brick.setPosition((i%16)*40,60+(i/16)*40);
             brick.setGraphics(assets.getTexture("brick.png"));
+
+            brick.setCollidable(true);
             addEntities(brick);
         }
     }
@@ -108,7 +150,10 @@ public class BreakOutApp extends GameApplication{
         Text scoreText= new Text();
         scoreText.setTranslateY(50);
         scoreText.setFont(Font.font(18));
-        scoreText.setText("SCORE: ");
+        scoreText.textProperty().bind(score.asString());
+        //scoreText.setText("SCORE: ");
+
+
         uiRoot.getChildren().add(scoreText);
     }
 
