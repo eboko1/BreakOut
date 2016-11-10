@@ -24,6 +24,7 @@ import org.jbox2d.dynamics.FixtureDef;
  * Created by Vika on 05.11.2016.
  */
 public class BreakOutApp extends GameApplication{
+
     private enum Type implements EntityType{
         BAT,BALL, BRICK, SCREEN
     }
