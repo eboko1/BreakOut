@@ -36,7 +36,7 @@ public class BreakOutApp extends GameApplication{
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setTitle("Created by Frantsuh_Breakout ");
+        settings.setTitle("Created by Frantsuh_Breakout_Game ");
         settings.setVersion("1.0");
         settings.setWidth(640);
         settings.setHeight(660);
